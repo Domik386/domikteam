@@ -1,155 +1,196 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Domik — Артем</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Manrope:wght@500;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --accent:#ff8c1a;
-  --accent2:#ff4d00;
-  --bg:#050505;
-  --glass:rgba(18,18,18,.62);
-  --glass2:rgba(18,18,18,.78);
-  --border:rgba(255,255,255,.10);
-  --muted:#a9a9a9;
+  --bg0:#03040a;
+  --bg1:#000;
   --text:#fff;
-  --shadow: 0 20px 60px rgba(0,0,0,.55);
-  --glow: 0 0 30px rgba(255,140,26,.35);
+  --muted: rgba(255,255,255,.72);
+  --muted2: rgba(255,255,255,.48);
+
+  --a:#ff8c1a;
+  --b:#ff4d00;
+  --c:#a855f7;
+  --d:#22c55e;
+
+  --glass: rgba(18,18,26,.58);
+  --glass2: rgba(18,18,26,.78);
+
+  --shadow: 0 28px 92px rgba(0,0,0,.70);
+  --glow: 0 0 46px rgba(255,140,26,.28);
+  --glow2: 0 0 52px rgba(168,85,247,.22);
+  --ring: 0 0 0 3px rgba(255,140,26,.22);
+
+  --r-xl: 30px;
+  --max: 1180px;
+  --headerH: 76px;
+
+  --tA: var(--a);
+  --tB: var(--b);
+  --tC: var(--c);
 }
 
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+[data-theme="ember"]{ --tA:#ff6a00; --tB:#ff2d55; --tC:#ffd000; }
+[data-theme="neon"]{ --tA:#22c55e; --tB:#38bdf8; --tC:#a855f7; }
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
 body{
   margin:0;
+  color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--text);
-  background: var(--bg);
   overflow-x:hidden;
-}
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 
-/* ===== Animated background ===== */
-.bg{
-  position:fixed;
-  inset:0;
-  z-index:-2;
   background:
-    radial-gradient(900px 600px at 15% 10%, rgba(255,140,26,.12), transparent 60%),
-    radial-gradient(900px 600px at 80% 20%, rgba(255,77,0,.10), transparent 60%),
-    radial-gradient(900px 600px at 60% 90%, rgba(255,140,26,.10), transparent 60%),
-    linear-gradient(180deg, #060606, #000);
+    radial-gradient(1200px 700px at 10% 10%, rgba(255,140,26,.18), transparent 60%),
+    radial-gradient(1200px 700px at 86% 12%, rgba(255,77,0,.14), transparent 60%),
+    radial-gradient(1200px 700px at 55% 95%, rgba(168,85,247,.12), transparent 60%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
 }
 
-.orbs{
-  position:fixed;
-  inset:-10%;
-  z-index:-1;
-  filter: blur(40px);
-  opacity:.85;
-  pointer-events:none;
+.bgfx{ position:fixed; inset:0; z-index:-14; pointer-events:none; }
+.bgfx::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity:.06;
+  mask-image: radial-gradient(circle at 50% 15%, black 0%, transparent 64%);
 }
+.bgfx::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+  opacity:.085;
+  mix-blend-mode: overlay;
+}
+
+.aurora{
+  position:fixed; top:-26vh; left:-10vw; width:120vw; height:62vh;
+  z-index:-13; pointer-events:none; filter: blur(40px); opacity:.74;
+}
+.aurora::before{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(45% 75% at 15% 55%, rgba(255,106,0,.34), transparent 62%),
+    radial-gradient(45% 75% at 55% 20%, rgba(168,85,247,.26), transparent 64%),
+    radial-gradient(45% 75% at 88% 60%, rgba(255,45,85,.22), transparent 62%);
+  transform: skewY(-8deg);
+  animation: aur 9.6s ease-in-out infinite alternate;
+}
+@keyframes aur{
+  0%{ transform: translate3d(-2%,0,0) skewY(-8deg) scale(1.02); opacity:.74; }
+  100%{ transform: translate3d(2%,-2%,0) skewY(-6deg) scale(1.08); opacity:.90; }
+}
+
+.orbs{ position:fixed; inset:-12%; z-index:-12; filter: blur(58px); opacity:.90; pointer-events:none; }
 .orb{
   position:absolute;
-  width:520px;height:520px;
-  border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,140,26,.55), rgba(255,77,0,.08) 65%, transparent 70%);
-  animation: float 12s ease-in-out infinite;
+  width:620px; height:620px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,140,26,.52), rgba(255,77,0,.10) 62%, transparent 70%);
+  animation: float 14s ease-in-out infinite;
 }
-.orb:nth-child(2){
-  width:640px;height:640px;
-  left:55%; top:10%;
-  background: radial-gradient(circle at 40% 40%, rgba(255,77,0,.45), rgba(255,140,26,.10) 62%, transparent 70%);
+.orb.o2{
+  width:820px;height:820px; left:56%; top:8%;
+  background: radial-gradient(circle at 40% 40%, rgba(168,85,247,.44), rgba(255,140,26,.10) 62%, transparent 70%);
+  animation-duration: 18s;
+}
+.orb.o3{
+  width:580px;height:580px; left:16%; top:64%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,77,0,.34), rgba(168,85,247,.10) 62%, transparent 70%);
   animation-duration: 16s;
 }
-.orb:nth-child(3){
-  width:480px;height:480px;
-  left:25%; top:65%;
-  background: radial-gradient(circle at 35% 35%, rgba(255,140,26,.38), rgba(255,77,0,.10) 62%, transparent 70%);
-  animation-duration: 14s;
-}
 @keyframes float{
-  0%{ transform: translate3d(-20px,-10px,0) scale(1); }
-  50%{ transform: translate3d(30px,20px,0) scale(1.06); }
-  100%{ transform: translate3d(-20px,-10px,0) scale(1); }
+  0%{ transform: translate3d(-18px,-10px,0) scale(1); }
+  50%{ transform: translate3d(38px,20px,0) scale(1.08); }
+  100%{ transform: translate3d(-18px,-10px,0) scale(1); }
 }
 
-/* ===== Cursor glow ===== */
-.cursor-glow{
-  position:fixed;
-  width:520px;height:520px;
-  border-radius:50%;
-  background: radial-gradient(circle, rgba(255,140,26,.20), transparent 60%);
-  pointer-events:none;
-  z-index:-1;
-  transform: translate(-50%, -50%);
+canvas#sparks{ position:fixed; inset:0; z-index:-11; pointer-events:none; opacity:.66; }
+canvas#rain{ position:fixed; inset:0; z-index:-10; pointer-events:none; opacity:.62; filter: blur(.2px); mix-blend-mode: screen; }
+canvas#clickFX{ position:fixed; inset:0; z-index:200; pointer-events:none; }
+
+.glow{
+  position:fixed; width:720px;height:720px; border-radius:50%;
+  background: radial-gradient(circle, rgba(255,140,26,.22), transparent 60%);
+  pointer-events:none; z-index:-9;
+  transform: translate(-50%,-50%);
   mix-blend-mode: screen;
+  opacity:.95;
+}
+.trail{ position:fixed; inset:0; pointer-events:none; z-index:-8; opacity:.92; mix-blend-mode: screen; }
+.trail i{
+  position:absolute; width:10px;height:10px;border-radius:999px;
+  background: radial-gradient(circle, rgba(255,255,255,.70), transparent 65%);
+  transform: translate(-50%,-50%);
+  opacity:0;
+  transition: opacity .25s, transform .25s;
 }
 
-/* ===== Header ===== */
 header{
-  position:sticky;
-  top:0;
-  z-index:30;
-  backdrop-filter: blur(14px);
-  background: rgba(7,7,7,.55);
+  position:sticky; top:0; z-index:80;
+  backdrop-filter: blur(16px);
+  background: rgba(8,8,12,.58);
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .topbar{
-  max-width:1180px;
+  max-width: var(--max);
   margin:auto;
-  padding:18px 18px;
+  padding:14px 18px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:900;
-  letter-spacing:.3px;
-  user-select:none;
-}
-.badge{
-  width:40px;height:40px;
-  border-radius:14px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  box-shadow: var(--glow);
-  display:grid;
-  place-items:center;
-  color:#070707;
-  font-weight:1000;
+  min-height: var(--headerH);
 }
 .brand span{
-  font-size:20px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  font-size:28px;
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  font-weight:900;
+  letter-spacing:-.8px;
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+  text-shadow: 0 0 44px rgba(255,140,26,.22);
 }
+
 nav{
-  display:flex;
-  gap:18px;
-  align-items:center;
+  display:flex; gap:10px; align-items:center; padding:6px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
 }
 nav a{
-  color:var(--muted);
+  color: rgba(255,255,255,.72);
   text-decoration:none;
   font-size:14px;
-  position:relative;
-  padding:8px 8px;
-  border-radius:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  transition:.22s;
 }
-nav a:hover{
-  color:#fff;
-  background: rgba(255,255,255,.06);
+nav a:hover{ color:#fff; background: rgba(255,255,255,.06); }
+nav a.active{
+  color:#0a0a0a;
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
+  box-shadow: var(--glow), var(--glow2);
+  font-weight:900;
 }
-.actions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
+
+.actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
 .btn{
   border:1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.05);
@@ -158,21 +199,96 @@ nav a:hover{
   border-radius:14px;
   font-size:14px;
   cursor:pointer;
-  transition:.25s;
+  transition:.18s;
   display:inline-flex;
   gap:8px;
   align-items:center;
   text-decoration:none;
+  will-change: transform;
+  position:relative;
+  overflow:hidden;
+  transform: translateZ(0);
 }
-.btn:hover{ transform: translateY(-2px); border-color: rgba(255,140,26,.55); box-shadow: var(--glow); }
+.btn::after{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.18), transparent 44%);
+  opacity:0;
+  transition:.18s;
+  pointer-events:none;
+}
+.btn:hover::after{ opacity:1; }
+.btn:hover{
+  border-color: rgba(255,140,26,.55);
+  box-shadow: 0 0 70px rgba(255,140,26,.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.btn:focus-visible{ outline:none; box-shadow: var(--glow), var(--ring); }
 .btn.primary{
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color:#0a0a0a;
   border:0;
-  font-weight:800;
+  color:#0a0a0a;
+  font-weight:900;
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
+  box-shadow: var(--glow), var(--glow2);
+}
+.btn.pill{ border-radius:999px; padding:9px 12px; font-size:13px; background: rgba(255,255,255,.04); }
+
+.switch{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color:#fff;
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:13px;
+  cursor:pointer;
+  transition:.18s;
+  user-select:none;
+}
+.switch:hover{ border-color: rgba(255,140,26,.55); box-shadow: 0 0 62px rgba(255,140,26,.14); transform: translateY(-1px); }
+.pip{
+  width:34px;height:18px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  position:relative;
+  overflow:hidden;
+}
+.pip i{
+  position:absolute;
+  top:50%;
+  left:3px;
+  width:12px;height:12px;border-radius:50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
+  box-shadow: 0 0 18px rgba(255,140,26,.20);
+  transition:.18s;
+}
+.switch.on .pip i{ left:19px; }
+
+/* Volume UI */
+.vol{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+}
+.vol label{ font-size:13px; color: rgba(255,255,255,.84); user-select:none; }
+.vol input[type="range"]{
+  width:120px;
+  accent-color: #ff8c1a;
+}
+.vol small{
+  width:34px;
+  text-align:right;
+  font-size:12px;
+  color: rgba(255,255,255,.62);
+  user-select:none;
 }
 
-/* Mobile menu */
 .burger{
   display:none;
   width:44px;height:44px;
@@ -180,21 +296,25 @@ nav a:hover{
   border:1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.05);
   cursor:pointer;
+  position:relative;
 }
-.burger:active{ transform: scale(.98); }
 .burger span{
-  display:block;
-  width:18px;height:2px;
+  position:absolute; left:50%;
+  width:18px; height:2px;
   background:#fff;
-  margin:5px auto;
   border-radius:2px;
+  transform: translateX(-50%);
+  transition:.22s ease;
 }
-.mobile-nav{
-  display:none;
-  padding:10px 18px 18px;
-  max-width:1180px;
-  margin:auto;
-}
+.burger span:nth-child(1){ top:14px; }
+.burger span:nth-child(2){ top:21px; opacity:1; }
+.burger span:nth-child(3){ top:28px; }
+.burger.open span:nth-child(1){ top:21px; transform: translateX(-50%) rotate(45deg); }
+.burger.open span:nth-child(2){ opacity:0; }
+.burger.open span:nth-child(3){ top:21px; transform: translateX(-50%) rotate(-45deg); }
+
+.mobile-nav{ display:none; padding:10px 18px 18px; max-width: var(--max); margin:auto; }
+.mobile-nav.open{ display:block; }
 .mobile-nav a{
   display:block;
   padding:12px 12px;
@@ -204,127 +324,199 @@ nav a:hover{
   border-radius:14px;
   color:#fff;
   text-decoration:none;
+  transition:.22s;
 }
-.mobile-nav a:hover{ border-color: rgba(255,140,26,.55); box-shadow: var(--glow); }
+.mobile-nav a:hover{ border-color: rgba(255,140,26,.55); box-shadow: 0 0 48px rgba(255,140,26,.14); }
 
-/* ===== Layout ===== */
-.container{
-  max-width:1180px;
-  margin:auto;
-  padding:26px 18px 0;
-}
-section{ margin-top:84px; }
+.container{ max-width: var(--max); margin:auto; padding:26px 18px 0; }
+section{ margin-top:94px; scroll-margin-top: calc(var(--headerH) + 22px); }
+
+.section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin-bottom:22px; }
 h2{
-  margin:0 0 26px;
-  font-size:30px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  margin:0;
+  font-size:34px;
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  letter-spacing:-.5px;
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+  text-shadow: 0 0 40px rgba(255,140,26,.16);
+}
+.sub{ margin:0; color: var(--muted2); font-size:13px; line-height:1.55; max-width: 62ch; }
+
+.divider{
+  width:100%;
+  height:1px;
+  margin:40px 0 0;
+  background: linear-gradient(90deg, transparent, rgba(255,140,26,.55), rgba(168,85,247,.40), transparent);
+  opacity:.85;
+  filter: drop-shadow(0 0 22px rgba(255,140,26,.14));
 }
 
-/* ===== Hero ===== */
 .hero{
-  margin-top:28px;
+  margin-top:34px;
   display:grid;
-  grid-template-columns: 1.25fr .75fr;
+  grid-template-columns: 1.15fr .85fr;
   gap:22px;
   align-items:stretch;
 }
+
+.halo{
+  position:relative;
+  border-radius: var(--r-xl);
+  padding:1px;
+  background: linear-gradient(135deg, rgba(255,140,26,.40), rgba(255,77,0,.18), rgba(168,85,247,.16), rgba(255,255,255,.10));
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  isolation:isolate;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.halo::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
+  opacity:.14;
+  transform: translateX(-45%);
+  animation: sheen 4.0s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sheen{
+  0%{ transform: translateX(-70%); opacity:.07; }
+  50%{ transform: translateX(70%); opacity:.16; }
+  100%{ transform: translateX(70%); opacity:.07; }
+}
+
 .hero-card{
   background: var(--glass);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:28px;
-  box-shadow: var(--shadow);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius: calc(var(--r-xl) - 1px);
+  padding:34px;
   backdrop-filter: blur(16px);
   position:relative;
   overflow:hidden;
+  z-index:1;
 }
-.hero-card::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background: radial-gradient(700px 300px at 10% 10%, rgba(255,140,26,.18), transparent 60%);
-  opacity:.9;
-}
-.hero-card > *{ position:relative; }
 .kicker{
-  display:inline-flex;
-  gap:10px;
-  align-items:center;
+  display:inline-flex; gap:10px; align-items:center;
   padding:8px 12px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.06);
-  color: #f0f0f0;
+  color: rgba(255,255,255,.92);
   font-size:13px;
 }
 .dot{
-  width:8px;height:8px;border-radius:50%;
-  background: #44ff8a;
-  box-shadow: 0 0 16px rgba(68,255,138,.45);
+  width:9px;height:9px;border-radius:50%;
+  background: var(--d);
+  box-shadow: 0 0 18px rgba(34,197,94,.35);
 }
 .hero h1{
-  margin:14px 0 10px;
-  font-size:44px;
-  line-height:1.05;
+  margin:16px 0 10px;
+  font-size:56px;
+  line-height:1.01;
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  letter-spacing:-1.2px;
+}
+.domik-solid{
+  color:#fff;
+  font-weight:900;
+  letter-spacing:-1px;
+  text-shadow: 0 0 18px rgba(255,255,255,.08);
 }
 .hero p{
   margin:0;
-  color:#d8d8d8;
-  line-height:1.8;
+  color: rgba(255,255,255,.84);
+  line-height:1.95;
   font-size:15px;
+  max-width: 64ch;
 }
-.hero-actions{
+.hero-actions{ margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; }
+
+.stats{
   margin-top:18px;
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:10px;
 }
-.chips{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:18px;
+.statbox{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  border-radius:18px;
+  padding:12px 12px;
+  transition:.22s;
 }
+.statbox:hover{ border-color: rgba(255,140,26,.45); transform: translateY(-2px); }
+.statnum{
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:-.3px;
+  margin:0;
+}
+.statlabel{ margin:3px 0 0; color: var(--muted2); font-size:12px; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
 .chip{
   padding:10px 12px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.05);
-  color: var(--muted);
+  color: rgba(255,255,255,.74);
   font-size:13px;
+  transition:.22s;
 }
+.chip:hover{ border-color: rgba(255,140,26,.40); transform: translateY(-1px); }
 
-/* ===== Side card ===== */
-.side{
-  display:grid;
-  gap:14px;
+.quickbar{ margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+
+.marquee{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 999px;
+  overflow:hidden;
+  position:relative;
+  margin-top:16px;
 }
-.side .mini{
+.marqueeTrack{
+  display:flex; gap:28px;
+  padding:10px 16px;
+  white-space: nowrap;
+  will-change: transform;
+  animation: roll 16s linear infinite;
+  font-size:13px;
+  color: rgba(255,255,255,.76);
+}
+.marquee b{ color:#fff; font-weight:900; }
+@keyframes roll{ 0%{ transform: translateX(0); } 100%{ transform: translateX(-50%); } }
+
+.side{ display:grid; gap:14px; }
+.mini{
   background: var(--glass2);
   border:1px solid rgba(255,255,255,.10);
-  border-radius:24px;
+  border-radius: var(--r-xl);
   padding:18px;
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
 }
 .mini-title{
-  font-weight:900;
   margin:0 0 8px;
+  font-weight:900;
+  font-family: Manrope, Inter, system-ui, sans-serif;
 }
 .stat{
-  display:flex; justify-content:space-between; align-items:center;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
   padding:10px 12px;
   margin-top:10px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.08);
   background: rgba(255,255,255,.04);
+  transition:.22s;
 }
+.stat:hover{ border-color: rgba(255,140,26,.35); transform: translateY(-1px); }
 .stat b{ color:#fff; }
-.stat span{ color: var(--muted); }
+.stat span{ color: var(--muted2); font-size:13px; }
 
-/* ===== Grid cards ===== */
 .grid{
   display:grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -333,45 +525,40 @@ h2{
 .card{
   background: var(--glass);
   border:1px solid rgba(255,255,255,.10);
-  border-radius:22px;
+  border-radius:24px;
   padding:18px;
   backdrop-filter: blur(14px);
-  transition:.28s;
+  transition:.25s;
   position:relative;
   overflow:hidden;
+  will-change: transform;
 }
 .card::before{
   content:"";
   position:absolute; inset:0;
-  background: linear-gradient(120deg, transparent, rgba(255,140,26,.12), transparent);
+  background: linear-gradient(120deg, transparent, rgba(255,140,26,.16), transparent);
   opacity:0;
-  transition:.28s;
+  transition:.25s;
+}
+.card::after{
+  content:"";
+  position:absolute; inset:-60%;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.12), transparent 40%);
+  opacity:0;
+  transition:.25s;
+  pointer-events:none;
 }
 .card:hover::before{ opacity:1; }
-.card:hover{
-  transform: translateY(-8px);
-  border-color: rgba(255,140,26,.55);
-  box-shadow: var(--glow);
-}
-.card h4{ margin:0 0 8px; font-size:16px; }
-.card p, .card a{
-  margin:0;
-  color: var(--muted);
-  font-size:13px;
-  line-height:1.5;
-  word-break: break-all;
-  text-decoration:none;
-}
+.card:hover::after{ opacity:1; }
+.card:hover{ transform: translateY(-10px) scale(1.01); border-color: rgba(255,140,26,.55); box-shadow: var(--glow), var(--shadow); }
+.card h4{ margin:0 0 8px; font-size:16px; font-family: Manrope, Inter, system-ui, sans-serif; }
+.card p,.card a{ margin:0; color: var(--muted); font-size:13px; line-height:1.55; word-break: break-word; text-decoration:none; }
 .card a:hover{ color:#fff; }
 
-/* Copy + link styles */
 .card.copy{ cursor:pointer; }
-.row{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-}
+.row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .copy-btn{
-  flex:0 0 auto;
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.06);
   color:#fff;
   border-radius:14px;
@@ -381,37 +568,48 @@ h2{
   transition:.2s;
 }
 .copy-btn:hover{ border-color: rgba(255,140,26,.55); box-shadow: var(--glow); transform: translateY(-1px); }
-.card.copy small{
-  display:block;
-  color:#7f7f7f;
-  margin-top:10px;
-  font-size:11px;
-}
+.card.copy small{ display:block; margin-top:10px; color: rgba(255,255,255,.42); font-size:11px; }
 
-/* Contacts */
-.contact{
-  display:flex; gap:12px; align-items:center;
-}
+.contact{ display:flex; gap:12px; align-items:center; }
 .icon{
   width:48px;height:48px;border-radius:16px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  box-shadow: var(--glow);
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
+  box-shadow: var(--glow), var(--glow2);
   display:grid; place-items:center;
   color:#0b0b0b;
   font-weight:1000;
+  font-family: Manrope, Inter, system-ui, sans-serif;
 }
 
-/* Reveal animations */
-.reveal{ opacity:0; transform: translateY(22px); transition: .7s ease; }
+.reveal{ opacity:0; transform: translateY(22px); transition: .75s ease; }
 .reveal.show{ opacity:1; transform: translateY(0); }
 
-/* Toast */
+.portal{ position:relative; }
+.portal::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-46px;
+  width:min(980px, 96vw);
+  height:92px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(closest-side at 50% 50%, rgba(255,140,26,.18), transparent 70%),
+    radial-gradient(closest-side at 50% 50%, rgba(168,85,247,.12), transparent 72%),
+    radial-gradient(closest-side at 50% 50%, rgba(255,255,255,.08), transparent 78%);
+  filter: blur(1px) drop-shadow(0 0 20px rgba(255,140,26,.14));
+  opacity:0;
+  transition:.55s ease;
+  pointer-events:none;
+}
+.portal.on::before{ opacity:1; }
+
 .toast{
   position: fixed;
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(15,15,15,.85);
+  background: rgba(15,15,18,.88);
   border: 1px solid rgba(255,255,255,.12);
   backdrop-filter: blur(14px);
   padding: 12px 14px;
@@ -423,19 +621,18 @@ h2{
   opacity:0;
   pointer-events:none;
   transition: .25s;
-  z-index:60;
+  z-index:90;
 }
 .toast.show{ opacity:1; transform: translateX(-50%) translateY(-6px); }
 .toast i{
   width:26px;height:26px;border-radius:10px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
   display:grid; place-items:center;
   color:#0b0b0b;
   font-style:normal;
   font-weight:900;
 }
 
-/* Back to top */
 .to-top{
   position:fixed;
   right:18px;
@@ -451,51 +648,165 @@ h2{
   opacity:0;
   pointer-events:none;
   transition:.2s;
-  z-index:70;
+  z-index:92;
 }
 .to-top.show{ opacity:1; pointer-events:auto; transform: translateY(-4px); }
 .to-top:hover{ border-color: rgba(255,140,26,.55); box-shadow: var(--glow); }
 
 footer{
-  margin-top:90px;
+  margin-top:96px;
   padding:44px 18px;
   text-align:center;
-  color:#6f6f6f;
+  color: rgba(255,255,255,.42);
   font-size:13px;
   border-top:1px solid rgba(255,255,255,.06);
   background: rgba(0,0,0,.25);
 }
 
-/* Responsive */
+.intro{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(1000px 600px at 50% 35%, rgba(255,140,26,.16), transparent 60%),
+    radial-gradient(900px 560px at 60% 60%, rgba(168,85,247,.12), transparent 62%),
+    rgba(0,0,0,.74);
+  backdrop-filter: blur(14px);
+  transition: .55s ease;
+}
+.intro.hide{ opacity:0; pointer-events:none; transform: translateY(-6px); }
+.intro-card{
+  width:min(620px, 94vw);
+  border-radius: 28px;
+  padding:18px;
+  background: linear-gradient(135deg, rgba(255,140,26,.40), rgba(255,77,0,.18), rgba(168,85,247,.16), rgba(255,255,255,.10));
+  box-shadow: var(--shadow), var(--glow), var(--glow2);
+  position:relative;
+  overflow:hidden;
+}
+.intro-card::before{
+  content:"";
+  position:absolute; inset:1px;
+  border-radius: 27px;
+  background: rgba(16,16,18,.72);
+  backdrop-filter: blur(18px);
+}
+.intro-inner{
+  position:relative;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  border-radius: 22px;
+  padding:20px;
+}
+.intro-title{
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  letter-spacing:-.8px;
+  margin:0 0 8px;
+  font-size:30px;
+  background: linear-gradient(135deg, var(--tA), var(--tB), var(--tC));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.intro-sub{ margin:0 0 14px; color: rgba(255,255,255,.78); line-height:1.6; font-size:13px; }
+.meter{
+  height:10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.meter > i{
+  display:block;
+  height:100%;
+  width:0%;
+  background: linear-gradient(90deg, var(--tA), var(--tB), var(--tC));
+  box-shadow: var(--glow);
+  border-radius:999px;
+  animation: load 0.95s ease forwards;
+}
+@keyframes load{ to{ width:100%; } }
+
+.performance-on .orbs,
+.performance-on .aurora,
+.performance-on .bgfx::before{ display:none; }
+
+.performance-on canvas#sparks{ opacity:.28; }
+.performance-on canvas#rain{ display:none; }
+.performance-on canvas#clickFX{ display:none; }
+.performance-on .glow,
+.performance-on .trail{ display:none; }
+.performance-on .halo::after{ animation:none; opacity:.08; }
+.performance-on .marqueeTrack{ animation-duration: 28s; }
+
 @media (max-width: 920px){
   .hero{ grid-template-columns: 1fr; }
-  .hero h1{ font-size: 38px; }
   nav{ display:none; }
   .burger{ display:block; }
-  .mobile-nav{ display:none; }
-  .mobile-nav.open{ display:block; }
+  .hero h1{ font-size: 46px; }
+}
+@media (max-width: 560px){
+  .hero h1{ font-size: 36px; }
+  .stats{ grid-template-columns: 1fr; }
+  .section-head{ flex-direction:column; align-items:flex-start; }
+  .vol input[type="range"]{ width:100px; }
+}
+@media (hover:none),(pointer:coarse){
+  canvas#sparks{ opacity:.30; }
+  canvas#rain{ display:none; }
+  canvas#clickFX{ display:none; }
+  .glow,.trail{ display:none; }
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .orb{ animation:none; }
+  .aurora::before{ animation:none; }
+  .halo::after{ animation:none; }
+  .marqueeTrack{ animation:none; }
+  .reveal{ transition:none; transform:none; opacity:1; }
+  canvas#sparks, canvas#rain, canvas#clickFX{ display:none; }
+  .intro{ display:none; }
+  .trail, .glow{ display:none; }
+  .btn,.card,.halo{ transition:none; }
 }
 </style>
 </head>
 
-<body>
-<div class="bg"></div>
-<div class="orbs">
-  <div class="orb" style="left:-6%; top:5%"></div>
-  <div class="orb"></div>
-  <div class="orb"></div>
+<body data-theme="ember">
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-card">
+    <div class="intro-inner">
+      <h3 class="intro-title">Domik — ГО СМОТРЕТЬ 🔥</h3>
+      <p class="intro-sub">Сейчас начнётся.</p>
+      <div class="meter"><i></i></div>
+    </div>
+  </div>
 </div>
-<div class="cursor-glow" id="glow"></div>
+
+<div class="bgfx"></div>
+<div class="aurora"></div>
+
+<div class="orbs" aria-hidden="true">
+  <div class="orb" style="left:-6%; top:6%"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+
+<canvas id="sparks"></canvas>
+<canvas id="rain"></canvas>
+<canvas id="clickFX"></canvas>
+
+<div class="trail" id="trail" aria-hidden="true"></div>
+<div class="glow" id="glow" aria-hidden="true"></div>
 
 <header>
   <div class="topbar">
-    <div class="brand">
-      <div class="badge">D</div>
-      <span>Domik</span>
-    </div>
+    <div class="brand"><span>Domik</span></div>
 
-    <nav>
+    <nav id="nav">
       <a href="#about">Обо мне</a>
+      <a href="#highlights">Highlights</a>
       <a href="#stream">Стрим</a>
       <a href="#support">Поддержка</a>
       <a href="#system">Система</a>
@@ -503,17 +814,30 @@ footer{
     </nav>
 
     <div class="actions">
+      <button class="btn pill" id="themeBtn" type="button">🎨 Тема</button>
+
+      <button class="btn pill" id="ambientBtn" type="button">🌧️🎹 Ambient: выкл</button>
+
+      <div class="vol" title="Громкость ambient">
+        <label for="vol">🔊</label>
+        <input id="vol" type="range" min="0" max="100" value="28"/>
+        <small id="volVal">28%</small>
+      </div>
+
+      <button class="switch" id="perfBtn" type="button"><span>⚡ Performance</span><span class="pip"><i></i></span></button>
+      <button class="switch" id="turboBtn" type="button"><span>🔥 Turbo</span><span class="pip"><i></i></span></button>
+
       <a class="btn" href="#support">💸 Донат</a>
       <a class="btn primary" href="https://t.me/domikteam1" target="_blank" rel="noreferrer">📣 Telegram</a>
       <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Twitch</a>
-      <button class="burger" id="burger" aria-label="Открыть меню">
-        <span></span><span></span><span></span>
-      </button>
+
+      <button class="burger" id="burger" aria-label="Открыть меню"><span></span><span></span><span></span></button>
     </div>
   </div>
 
   <div class="mobile-nav" id="mobileNav">
     <a href="#about">Обо мне</a>
+    <a href="#highlights">Highlights</a>
     <a href="#stream">Стрим</a>
     <a href="#support">Поддержка</a>
     <a href="#system">Система</a>
@@ -523,31 +847,52 @@ footer{
 
 <div class="container">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-card reveal show" id="about">
-      <div class="kicker"><span class="dot"></span> Онлайн-вайб • CS2 • Общение</div>
-      <h1>Артем<br><span style="color:#fff; opacity:.9">aka</span> <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Domik</span></h1>
-      <p>
-        Привет! Меня зовут Артем, в сети я известен как <b>Domik</b>.
-        Провожу стримы, играю в CS2, много общаюсь с чатом и создаю ламповую атмосферу.
-        <br><br>
-        Здесь ты можешь узнать больше обо мне, поддержать стрим или связаться напрямую.
-        Спасибо, что ты здесь 🧡
-      </p>
+  <div class="hero" id="about">
+    <div class="halo reveal show" id="tilt">
+      <div class="hero-card">
+        <div class="kicker"><span class="dot"></span> Онлайн-вайб • CS2 • Общение</div>
 
-      <div class="hero-actions">
-        <a class="btn primary" href="#support">💳 Поддержать</a>
-        <a class="btn" href="https://t.me/+YrEYNQy0OBYzYzg0" target="_blank" rel="noreferrer">💬 Чат</a>
-        <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Twitch</a>
-        <a class="btn" href="https://www.tiktok.com/@domikteam" target="_blank" rel="noreferrer">🎥 TikTok</a>
-      </div>
+        <h1>
+          Артем<br>
+          <span style="color:#fff;opacity:.92">aka</span>
+          <span class="domik-solid">Domik</span>
+        </h1>
 
-      <div class="chips">
-        <div class="chip">🎮 CS2: aim + chill</div>
-        <div class="chip">🧡 Комьюнити: DomikTeam</div>
-        <div class="chip">⚡ Стримы: регулярно</div>
-        <div class="chip">✨ Атмосфера: лампово</div>
+        <p>
+          Привет! Я Артем — <b>Domik</b>. Стримлю CS2, общаюсь с чатом и держу атмосферу на максималках.
+          Тут всё: ссылки, донаты, инфа и контакт. Спасибо, что ты со мной 🧡
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#support">💳 Поддержать</a>
+          <a class="btn" href="https://t.me/+YrEYNQy0OBYzYzg0" target="_blank" rel="noreferrer">💬 Чат</a>
+          <a class="btn" href="https://www.tiktok.com/@domikteam" target="_blank" rel="noreferrer">🎥 TikTok</a>
+        </div>
+
+        <div class="stats">
+          <div class="statbox"><p class="statnum" data-count="128">0</p><p class="statlabel">онлайн сегодня</p></div>
+          <div class="statbox"><p class="statnum" data-count="1540">0</p><p class="statlabel">фолловеров (пример)</p></div>
+          <div class="statbox"><p class="statnum" data-count="420">0</p><p class="statlabel">стримов/часов (пример)</p></div>
+        </div>
+
+        <div class="chips">
+          <div class="chip">🎮 CS2: aim + chill</div>
+          <div class="chip">🧡 Комьюнити: DomikTeam</div>
+          <div class="chip">⚡ Стримы: регулярно</div>
+          <div class="chip">✨ Вайб: ультра</div>
+        </div>
+
+        <div class="quickbar">
+          <button class="btn" id="copyAll" type="button">📎 Скопировать все ссылки</button>
+          <a class="btn" href="#contacts">⚡ Быстрая связь</a>
+        </div>
+
+        <div class="marquee">
+          <div class="marqueeTrack">
+            <span><b>LIVE</b> • CS2 • Общение • Мемы • Пати • Aim • Chill • DomikTeam •</span>
+            <span><b>LIVE</b> • CS2 • Общение • Мемы • Пати • Aim • Chill • DomikTeam •</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -564,79 +909,90 @@ footer{
         <p class="mini-title">Плашка стримера</p>
         <div class="stat"><b>Ник</b><span>Domik</span></div>
         <div class="stat"><b>Контент</b><span>CS2 + общение</span></div>
-        <div class="stat"><b>Стиль</b><span>ламповый</span></div>
+        <div class="stat"><b>Вайб</b><span>люкс-лампа</span></div>
       </div>
     </div>
   </div>
 
-  <!-- STREAM INFO -->
-  <section id="stream" class="reveal">
-    <h2>Стрим-инфо</h2>
+  <div class="divider"></div>
+
+  <section id="highlights" class="reveal portal">
+    <div class="section-head">
+      <div>
+        <h2>Highlights</h2>
+        <p class="sub">Самый сок: почему тут кайф, как зайти в движ, и что ты получишь.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn pill" href="https://t.me/domikteam1" target="_blank" rel="noreferrer">📣 Анонсы</a>
+        <a class="btn pill" href="https://t.me/+YrEYNQy0OBYzYzg0" target="_blank" rel="noreferrer">💬 Чат</a>
+        <a class="btn pill" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Twitch</a>
+      </div>
+    </div>
+
     <div class="grid">
-      <div class="card">
-        <h4>🗓️ Расписание</h4>
-        <p>Почти ежедневно вечером. Точное время — в Telegram и на Twitch.</p>
-      </div>
-
-      <div class="card">
-        <h4>🎮 Что будет на стриме</h4>
-        <p>CS2 матчмейкинг/пати, разбор моментов, общение с чатом, иногда “фановое”.</p>
-      </div>
-
-      <div class="card">
-        <h4>✅ Как поддержать</h4>
-        <p>Донат — в разделе “Поддержка”, а лучший буст — фоллоу на Twitch 🧡</p>
-        <p style="margin-top:10px;">
-          <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Перейти на Twitch</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <h4>📌 Правила чата</h4>
-        <p>Без токсика/спама/оскорблений. Уважение — база. Модеры следят 🙂</p>
-      </div>
+      <div class="card"><h4>🚀 Быстрый вход</h4><p>Залетаешь в чат — и ты уже в теме. Анонсы, расписание, движ.</p></div>
+      <div class="card"><h4>🧠 Разбор моментов</h4><p>Фишки, моменты, ошибки, советы — но без душноты.</p></div>
+      <div class="card"><h4>✅ Правила</h4><p>Без токсика/спама/оскорблений. Уважение — база.</p></div>
+      <div class="card"><h4>🧡 DomikTeam</h4><p>Комьюнити тёплое, атмосфера люкс, модеры на месте.</p></div>
     </div>
   </section>
 
-  <!-- SUPPORT -->
-  <section id="support" class="reveal">
-    <h2>Поддержать Domik</h2>
-    <div class="grid">
+  <div class="divider"></div>
 
+  <section id="stream" class="reveal portal">
+    <div class="section-head">
+      <div>
+        <h2>Стрим-инфо</h2>
+        <p class="sub">Коротко: где, что, когда, как залететь.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><h4>🗓️ Расписание</h4><p>Почти каждый вечер. Точное время — в Telegram.</p></div>
+      <div class="card"><h4>🎮 Контент</h4><p>CS2 матчмейкинг/пати, разбор, мемы, общение с чатом.</p></div>
+      <a class="card" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer"><h4>🟣 Twitch</h4><p>Откроется канал (без встроек)</p></a>
+      <a class="card" href="https://t.me/domikteam1" target="_blank" rel="noreferrer"><h4>📣 Telegram</h4><p>Анонсы, расписание, движ</p></a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="support" class="reveal portal">
+    <div class="section-head">
+      <div>
+        <h2>Поддержка</h2>
+        <p class="sub">Если хочешь усилить стрим и контент — тут способы. Копирование одним кликом.</p>
+      </div>
+    </div>
+
+    <div class="grid">
       <div class="card copy" data-copy="DWQSsLZ1JYty7LHe2f11FKGFpx9bGenQ1SAqdGpPFUFX">
-        <div class="row">
-          <h4>Solana</h4>
-          <button class="copy-btn" type="button">Копировать</button>
-        </div>
+        <div class="row"><h4>Solana</h4><button class="copy-btn" type="button">Копировать</button></div>
         <p>DWQSsLZ1JYty7LHe2f11FKGFpx9bGenQ1SAqdGpPFUFX</p>
-        <small>Нажми по карточке или по кнопке — адрес скопируется.</small>
+        <small>Клик по карточке или кнопке — скопирует адрес.</small>
       </div>
 
       <div class="card copy" data-copy="bc1qkztctt0m825q0y0alqfhagvg2mqh6uwwhfgdah">
-        <div class="row">
-          <h4>Bitcoin (BTC)</h4>
-          <button class="copy-btn" type="button">Копировать</button>
-        </div>
+        <div class="row"><h4>Bitcoin (BTC)</h4><button class="copy-btn" type="button">Копировать</button></div>
         <p>bc1qkztctt0m825q0y0alqfhagvg2mqh6uwwhfgdah</p>
-        <small>Поддержка на развитие стримов и контента.</small>
+        <small>Поддержка на развитие стримов и контента 🧡</small>
       </div>
 
-      <a class="card" href="https://donatepay.ru/don/1451218" target="_blank" rel="noreferrer">
-        <h4>DonatePay</h4>
-        <p>Кликабельно — откроется донат-страница</p>
-      </a>
-
-      <a class="card" href="https://www.donationalerts.com/r/domik122" target="_blank" rel="noreferrer">
-        <h4>DonationAlerts</h4>
-        <p>Кликабельно — донат с сообщением на стриме</p>
-      </a>
-
+      <a class="card" href="https://donatepay.ru/don/1451218" target="_blank" rel="noreferrer"><h4>DonatePay</h4><p>Откроется страница доната</p></a>
+      <a class="card" href="https://www.donationalerts.com/r/domik122" target="_blank" rel="noreferrer"><h4>DonationAlerts</h4><p>Донат с сообщением на стриме</p></a>
     </div>
   </section>
 
-  <!-- SYSTEM -->
-  <section id="system" class="reveal">
-    <h2>Игровая система</h2>
+  <div class="divider"></div>
+
+  <section id="system" class="reveal portal">
+    <div class="section-head">
+      <div>
+        <h2>Игровая система</h2>
+        <p class="sub">Железо, на котором крутится весь этот движ.</p>
+      </div>
+    </div>
+
     <div class="grid">
       <div class="card"><h4>Процессор</h4><p>Intel(R) Core(TM) i7-14700F</p></div>
       <div class="card"><h4>Видеокарта</h4><p>NVIDIA GeForce RTX 4070 SUPER</p></div>
@@ -646,48 +1002,28 @@ footer{
     </div>
   </section>
 
-  <!-- CONTACTS -->
-  <section id="contacts" class="reveal">
-    <h2>Контакты</h2>
+  <div class="divider"></div>
+
+  <section id="contacts" class="reveal portal">
+    <div class="section-head">
+      <div>
+        <h2>Контакты</h2>
+        <p class="sub">Переходишь — и ты уже в движухе.</p>
+      </div>
+    </div>
+
     <div class="grid">
       <a class="card" href="https://t.me/domikteam1" target="_blank" rel="noreferrer">
-        <div class="contact">
-          <div class="icon">TG</div>
-          <div>
-            <h4>Telegram</h4>
-            <p>t.me/domikteam1</p>
-          </div>
-        </div>
+        <div class="contact"><div class="icon">TG</div><div><h4>Telegram</h4><p>t.me/domikteam1</p></div></div>
       </a>
-
       <a class="card" href="https://t.me/+YrEYNQy0OBYzYzg0" target="_blank" rel="noreferrer">
-        <div class="contact">
-          <div class="icon">TC</div>
-          <div>
-            <h4>Telegram Chat</h4>
-            <p>Вступить в комьюнити</p>
-          </div>
-        </div>
+        <div class="contact"><div class="icon">TC</div><div><h4>Telegram Chat</h4><p>Вступить в комьюнити</p></div></div>
       </a>
-
       <a class="card" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">
-        <div class="contact">
-          <div class="icon">TW</div>
-          <div>
-            <h4>Twitch</h4>
-            <p>twitch.tv/domina_b</p>
-          </div>
-        </div>
+        <div class="contact"><div class="icon">TW</div><div><h4>Twitch</h4><p>twitch.tv/domina_b</p></div></div>
       </a>
-
       <a class="card" href="https://www.tiktok.com/@domikteam" target="_blank" rel="noreferrer">
-        <div class="contact">
-          <div class="icon">TT</div>
-          <div>
-            <h4>TikTok</h4>
-            <p>@domikteam</p>
-          </div>
-        </div>
+        <div class="contact"><div class="icon">TT</div><div><h4>TikTok</h4><p>@domikteam</p></div></div>
       </a>
     </div>
   </section>
@@ -697,82 +1033,815 @@ footer{
 <footer>© Артем (Domik) • 2025</footer>
 
 <div class="toast" id="toast"><i>✓</i><span id="toastText">Скопировано!</span></div>
-
 <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
 
 <script>
-/* Mobile menu */
-const burger = document.getElementById('burger');
-const mobileNav = document.getElementById('mobileNav');
-burger?.addEventListener('click', () => mobileNav.classList.toggle('open'));
-mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+(() => {
+  const body = document.body;
 
-/* Cursor glow */
-const glow = document.getElementById('glow');
-window.addEventListener('mousemove', (e) => {
-  glow.style.left = e.clientX + 'px';
-  glow.style.top  = e.clientY + 'px';
-});
+  const intro = document.getElementById('intro');
+  setTimeout(() => intro?.classList.add('hide'), 650);
 
-/* Reveal on scroll */
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(en => {
-    if(en.isIntersecting) en.target.classList.add('show');
+  const burger = document.getElementById('burger');
+  const mobileNav = document.getElementById('mobileNav');
+  burger?.addEventListener('click', () => { burger.classList.toggle('open'); mobileNav.classList.toggle('open'); });
+  mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('open'); mobileNav.classList.remove('open'); }));
+
+  document.querySelectorAll('.btn, .card, .statbox, nav a, .switch').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+      el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+    });
   });
-}, { threshold: 0.12 });
-reveals.forEach(el => io.observe(el));
 
-/* Toast */
-const toast = document.getElementById('toast');
-const toastText = document.getElementById('toastText');
-let toastTimer = null;
-function showToast(text){
-  toastText.textContent = text;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 1400);
-}
-
-/* Copy support */
-async function copyText(text){
-  try{
-    await navigator.clipboard.writeText(text);
-    showToast('Скопировано!');
-  }catch{
-    // fallback
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-    showToast('Скопировано!');
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  let toastTimer = null;
+  function showToast(text){
+    toastText.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1400);
   }
-}
 
-document.querySelectorAll('.card.copy').forEach(card => {
-  const value = card.dataset.copy || '';
-  const btn = card.querySelector('.copy-btn');
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      showToast('Скопировано!');
+      tap();
+    }catch{
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showToast('Скопировано!');
+      tap();
+    }
+  }
 
-  card.addEventListener('click', (e) => {
-    copyText(value);
+  document.querySelectorAll('.card.copy').forEach(card => {
+    const value = card.dataset.copy || '';
+    const btn = card.querySelector('.copy-btn');
+    card.addEventListener('click', () => copyText(value));
+    btn?.addEventListener('click', (e) => { e.stopPropagation(); copyText(value); });
   });
 
-  btn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    copyText(value);
+  document.getElementById('copyAll')?.addEventListener('click', () => {
+    const text =
+`Domik links:
+Telegram: https://t.me/domikteam1
+Chat: https://t.me/+YrEYNQy0OBYzYzg0
+Twitch: https://www.twitch.tv/domina_b
+TikTok: https://www.tiktok.com/@domikteam`;
+    copyText(text);
+    showToast('Ссылки скопированы!');
   });
-});
 
-/* Back to top */
-const toTop = document.getElementById('toTop');
-window.addEventListener('scroll', () => {
-  if(window.scrollY > 600) toTop.classList.add('show');
-  else toTop.classList.remove('show');
-});
-toTop?.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  const toTop = document.getElementById('toTop');
+  addEventListener('scroll', () => {
+    if (scrollY > 600) toTop.classList.add('show');
+    else toTop.classList.remove('show');
+  });
+  toTop?.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('show'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+
+  const portals = document.querySelectorAll('.portal');
+  const pio = new IntersectionObserver((entries) => {
+    entries.forEach(en => en.target.classList.toggle('on', en.isIntersecting));
+  }, { threshold: 0.30 });
+  portals.forEach(el => pio.observe(el));
+
+  const nav = document.getElementById('nav');
+  const navLinks = nav ? Array.from(nav.querySelectorAll('a')) : [];
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = '#' + entry.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+  sections.forEach(s => spy.observe(s));
+
+  function animateCount(el, to){
+    const duration = 900;
+    const start = performance.now();
+    const fmt = new Intl.NumberFormat('ru-RU');
+    function tick(now){
+      const t = Math.min(1, (now - start) / duration);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmt.format(Math.round(to * ease));
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const statNums = document.querySelectorAll('.statnum[data-count]');
+  const statIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      animateCount(el, Number(el.getAttribute('data-count') || '0'));
+    });
+  }, { threshold: 0.35 });
+  statNums.forEach(el => statIo.observe(el));
+
+  const tiltEnabled = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  function attachTilt(id, sx, sy){
+    const el = document.getElementById(id);
+    if (!el || !tiltEnabled) return;
+    let raf = null;
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      const rx = (py - 0.5) * -sx;
+      const ry = (px - 0.5) * sy;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        el.style.transform = `perspective(980px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
+      });
+    });
+    el.addEventListener('mouseleave', () => el.style.transform = '');
+  }
+  attachTilt('tilt', 8, 10);
+
+  const glow = document.getElementById('glow');
+  const canGlow = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  addEventListener('mousemove', (e) => {
+    if (!canGlow || !glow) return;
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+  const trail = document.getElementById('trail');
+  const trailDots = [];
+  if (trail && canGlow){
+    for (let i = 0; i < 16; i++){
+      const d = document.createElement('i');
+      trail.appendChild(d);
+      trailDots.push({ el: d, x: 0, y: 0, a: 0 });
+    }
+    let ti = 0;
+    addEventListener('mousemove', (e) => {
+      const t = trailDots[ti];
+      t.x = e.clientX;
+      t.y = e.clientY;
+      t.a = 1;
+      ti = (ti + 1) % trailDots.length;
+    });
+    (function loopTrail(){
+      for (const t of trailDots){
+        t.a *= 0.92;
+        t.el.style.left = t.x + 'px';
+        t.el.style.top  = t.y + 'px';
+        t.el.style.opacity = Math.max(0, t.a);
+        t.el.style.transform = `translate(-50%,-50%) scale(${0.9 + t.a * 0.8})`;
+      }
+      requestAnimationFrame(loopTrail);
+    })();
+  }
+
+  const themeBtn = document.getElementById('themeBtn');
+  const themes = ['ember','neon'];
+  let themeIndex = 0;
+  const savedTheme = localStorage.getItem('domik_theme');
+  if (savedTheme && themes.includes(savedTheme)) themeIndex = themes.indexOf(savedTheme);
+  body.setAttribute('data-theme', themes[themeIndex]);
+  themeBtn?.addEventListener('click', () => {
+    themeIndex = (themeIndex + 1) % themes.length;
+    body.setAttribute('data-theme', themes[themeIndex]);
+    localStorage.setItem('domik_theme', themes[themeIndex]);
+    showToast('Тема переключена');
+    tap();
+  });
+
+  const perfBtn = document.getElementById('perfBtn');
+  const turboBtn = document.getElementById('turboBtn');
+  let perfOn = (localStorage.getItem('domik_perf') === '1');
+  let turboOn = (localStorage.getItem('domik_turbo') === '1');
+  function syncSwitch(el, on){ el?.classList.toggle('on', !!on); }
+  function applyPerfClass(){ body.classList.toggle('performance-on', perfOn); }
+  syncSwitch(perfBtn, perfOn);
+  syncSwitch(turboBtn, turboOn);
+  applyPerfClass();
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const sparks = document.getElementById('sparks');
+  const sctx = sparks?.getContext('2d');
+  const rain = document.getElementById('rain');
+  const rctx = rain?.getContext('2d');
+  const clickFX = document.getElementById('clickFX');
+  const cctx = clickFX?.getContext('2d');
+
+  let W = 0, H = 0, DPR = 1;
+
+  function chooseDPR(){
+    const lowEnd = matchMedia('(hover:none),(pointer:coarse)').matches || innerWidth < 900;
+    if (perfOn) return 1;
+    if (lowEnd) return 1;
+    if (turboOn) return Math.min(2, devicePixelRatio || 1);
+    return Math.min(1.5, devicePixelRatio || 1);
+  }
+
+  function resize(){
+    DPR = chooseDPR();
+    W = Math.floor(innerWidth * DPR);
+    H = Math.floor(innerHeight * DPR);
+    if (sparks){ sparks.width = W; sparks.height = H; }
+    if (rain){ rain.width = W; rain.height = H; }
+    if (clickFX){ clickFX.width = W; clickFX.height = H; }
+    makeSparks(turboOn ? 110 : 70);
+    makeDrops(turboOn ? 240 : 160);
+  }
+  addEventListener('resize', resize);
+
+  function rand(a,b){ return a + Math.random() * (b - a); }
+
+  let sp = [];
+  function makeSparks(n){
+    sp = [];
+    for (let i = 0; i < n; i++){
+      sp.push({ x: rand(0, W), y: rand(0, H), r: rand(1.0, 2.8) * DPR, vx: rand(-0.22, 0.22) * DPR, vy: rand(-0.12, 0.16) * DPR, a: rand(0.14, 0.58), t: rand(0, Math.PI * 2) });
+    }
+  }
+
+  let drops = [];
+  function makeDrops(n){
+    drops = [];
+    for (let i = 0; i < n; i++){
+      drops.push({ x: rand(0, W), y: rand(0, H), l: rand(40, 140) * DPR, s: rand(6, 14) * DPR, w: rand(1, 1.9) * DPR, h: rand(0, 1) });
+    }
+  }
+
+  const bursts = [];
+  function burst(x,y){
+    const k = turboOn ? 26 : 16;
+    const cols = ['#ff8c1a','#ff4d00','#a855f7'];
+    for (let i = 0; i < k; i++){
+      bursts.push({
+        x, y,
+        vx: rand(-4.8, 4.8) * DPR,
+        vy: rand(-4.8, 4.8) * DPR,
+        r: rand(1.2, 2.8) * DPR,
+        life: 1,
+        c: cols[i % 3]
+      });
+    }
+  }
+
+  addEventListener('pointerdown', (e) => {
+    if (reduce || perfOn) return;
+    burst(e.clientX * DPR, e.clientY * DPR);
+    tap();
+  });
+
+  function loopFX(){
+    if (reduce){
+      if (sparks) sparks.style.display = 'none';
+      if (rain) rain.style.display = 'none';
+      if (clickFX) clickFX.style.display = 'none';
+      return;
+    }
+
+    const doFX = !perfOn;
+    const sparkOn = doFX;
+    const rainOn = doFX;
+
+    if (sctx){
+      sctx.clearRect(0,0,W,H);
+      if (sparkOn){
+        for (const p of sp){
+          p.t += 0.02;
+          p.x += p.vx + Math.sin(p.t) * 0.06 * DPR;
+          p.y += p.vy + Math.cos(p.t) * 0.05 * DPR;
+          if (p.x < -20) p.x = W + 20;
+          if (p.x > W + 20) p.x = -20;
+          if (p.y < -20) p.y = H + 20;
+          if (p.y > H + 20) p.y = -20;
+
+          sctx.beginPath();
+          sctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          sctx.fillStyle = `rgba(255,255,255,${p.a*0.58})`;
+          sctx.fill();
+
+          sctx.beginPath();
+          sctx.arc(p.x,p.y,p.r*3.1,0,Math.PI*2);
+          sctx.fillStyle = `rgba(168,85,247,${p.a*0.15})`;
+          sctx.fill();
+
+          sctx.beginPath();
+          sctx.arc(p.x,p.y,p.r*2.8,0,Math.PI*2);
+          sctx.fillStyle = `rgba(255,140,26,${p.a*0.12})`;
+          sctx.fill();
+        }
+      }
+    }
+
+    if (rctx){
+      rctx.clearRect(0,0,W,H);
+      if (rainOn){
+        for (const d of drops){
+          d.y += d.s * (turboOn ? 1.15 : 1);
+          d.x += Math.sin((d.y / H) * 6.28) * 0.16 * DPR;
+
+          if (d.y > H + 160 * DPR){
+            d.y = -rand(40, 260) * DPR;
+            d.x = rand(0, W);
+            d.l = rand(40, 140) * DPR;
+            d.s = rand(6, 14) * DPR;
+            d.w = rand(1, 1.9) * DPR;
+            d.h = rand(0, 1);
+          }
+
+          const grd = rctx.createLinearGradient(d.x, d.y, d.x, d.y + d.l);
+          grd.addColorStop(0, `rgba(255,255,255,0)`);
+          grd.addColorStop(0.22, `rgba(255,255,255,0.08)`);
+          grd.addColorStop(1, `rgba(255,255,255,0)`);
+          rctx.strokeStyle = grd;
+          rctx.lineWidth = d.w;
+          rctx.beginPath();
+          rctx.moveTo(d.x, d.y);
+          rctx.lineTo(d.x, d.y + d.l);
+          rctx.stroke();
+        }
+      }
+    }
+
+    if (cctx){
+      cctx.clearRect(0,0,W,H);
+      for (let i = bursts.length - 1; i >= 0; i--){
+        const b = bursts[i];
+        b.life *= 0.92;
+        b.x += b.vx;
+        b.y += b.vy;
+        b.vx *= 0.92;
+        b.vy *= 0.92;
+
+        const a = Math.max(0, b.life);
+        cctx.beginPath();
+        cctx.arc(b.x,b.y,b.r*(1+(1-a)*2.2),0,Math.PI*2);
+        cctx.fillStyle = b.c + '22';
+        cctx.fill();
+
+        cctx.beginPath();
+        cctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+        cctx.fillStyle = `rgba(255,255,255,${0.62*a})`;
+        cctx.fill();
+
+        if (a < 0.06) bursts.splice(i, 1);
+      }
+    }
+
+    requestAnimationFrame(loopFX);
+  }
+
+  perfBtn?.addEventListener('click', () => {
+    perfOn = !perfOn;
+    localStorage.setItem('domik_perf', perfOn ? '1' : '0');
+    syncSwitch(perfBtn, perfOn);
+    applyPerfClass();
+    resize();
+    showToast(perfOn ? 'Performance: вкл' : 'Performance: выкл');
+    tap();
+  });
+
+  turboBtn?.addEventListener('click', () => {
+    turboOn = !turboOn;
+    localStorage.setItem('domik_turbo', turboOn ? '1' : '0');
+    syncSwitch(turboBtn, turboOn);
+    resize();
+    showToast(turboOn ? 'Turbo: вкл' : 'Turbo: выкл');
+    tap();
+  });
+
+  resize();
+  requestAnimationFrame(loopFX);
+
+  // ===== Ambient (Calm Drops + Live Piano) - WebAudio, no mp3 =====
+  const ambientBtn = document.getElementById('ambientBtn');
+  const vol = document.getElementById('vol');
+  const volVal = document.getElementById('volVal');
+
+  let ambientOn = (localStorage.getItem('domik_ambient') === '1');
+  let ambientVol = Number(localStorage.getItem('domik_ambient_vol') || '28');
+  ambientVol = Number.isFinite(ambientVol) ? Math.min(100, Math.max(0, ambientVol)) : 28;
+
+  vol.value = String(ambientVol);
+  volVal.textContent = ambientVol + '%';
+
+  let AC = null;
+  let nodes = null;
+  let schedTimer = null;
+
+  function uiAmbient(){
+    ambientBtn.textContent = ambientOn ? '🌧️🎹 Ambient: вкл' : '🌧️🎹 Ambient: выкл';
+  }
+  uiAmbient();
+
+  function ensureAC(){
+    if (AC) return AC;
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    return AC;
+  }
+
+  async function resumeIfNeeded(){
+    try{
+      ensureAC();
+      if (AC.state === 'suspended') await AC.resume();
+    }catch{}
+  }
+
+  function setVolumeUI(v){
+    ambientVol = Math.min(100, Math.max(0, v|0));
+    vol.value = String(ambientVol);
+    volVal.textContent = ambientVol + '%';
+    localStorage.setItem('domik_ambient_vol', String(ambientVol));
+
+    if (nodes){
+      const v01 = (ambientVol / 100) * 0.18;
+      const now = AC.currentTime;
+      nodes.master.gain.cancelScheduledValues(now);
+      nodes.master.gain.setValueAtTime(Math.max(0.0001, nodes.master.gain.value), now);
+      nodes.master.gain.linearRampToValueAtTime(v01, now + 0.10);
+    }
+  }
+  vol.addEventListener('input', () => setVolumeUI(Number(vol.value)));
+
+  function rand2(a,b){ return a + Math.random()*(b-a); }
+
+  function mkImpulse(ctx, seconds, decay){
+    const rate = ctx.sampleRate;
+    const len = Math.floor(rate * seconds);
+    const buf = ctx.createBuffer(2, len, rate);
+    for (let ch = 0; ch < 2; ch++){
+      const data = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++){
+        const t = i / len;
+        data[i] = (Math.random()*2-1) * Math.pow(1 - t, decay);
+      }
+    }
+    return buf;
+  }
+
+  function makeNoiseBuffer(ctx, seconds){
+    const len = Math.floor(ctx.sampleRate * seconds);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1);
+    return buf;
+  }
+
+  function startAmbient(){
+    const ctx = ensureAC();
+    if (nodes) return;
+
+    const master = ctx.createGain();
+    master.gain.value = 0.0001;
+
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -28;
+    comp.knee.value = 28;
+    comp.ratio.value = 6;
+    comp.attack.value = 0.010;
+    comp.release.value = 0.22;
+
+    master.connect(comp);
+    comp.connect(ctx.destination);
+
+    const rev = ctx.createConvolver();
+    rev.buffer = mkImpulse(ctx, 2.6, 3.8);
+    const revSend = ctx.createGain();
+    revSend.gain.value = 0.20;
+    revSend.connect(rev);
+    rev.connect(master);
+
+    // Air bed (very quiet)
+    const air = ctx.createBufferSource();
+    air.buffer = makeNoiseBuffer(ctx, 2.0);
+    air.loop = true;
+
+    const airLP = ctx.createBiquadFilter();
+    airLP.type = 'lowpass';
+    airLP.frequency.value = 900;
+    airLP.Q.value = 0.2;
+
+    const airGain = ctx.createGain();
+    airGain.gain.value = 0.010;
+
+    air.connect(airLP);
+    airLP.connect(airGain);
+    airGain.connect(master);
+    airGain.connect(revSend);
+
+    // Droplets
+    const dropNoiseBuf = makeNoiseBuffer(ctx, 1.1);
+
+    function droplet(time){
+      const n = ctx.createBufferSource();
+      n.buffer = dropNoiseBuf;
+
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.setValueAtTime(rand2(2500, 5200), time);
+      bp.Q.setValueAtTime(rand2(7.0, 14.0), time);
+
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(rand2(5200, 7600), time);
+      lp.Q.value = 0.3;
+
+      const body = ctx.createBiquadFilter();
+      body.type = 'peaking';
+      body.frequency.setValueAtTime(rand2(280, 520), time);
+      body.Q.value = 1.0;
+      body.gain.value = 1.6;
+
+      const g = ctx.createGain();
+      const vel = rand2(0.010, 0.028);
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(vel, time + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + rand2(0.060, 0.120));
+
+      const pan = ctx.createStereoPanner();
+      pan.pan.setValueAtTime(rand2(-0.35, 0.35), time);
+
+      n.connect(bp);
+      bp.connect(lp);
+      lp.connect(body);
+      body.connect(g);
+      g.connect(pan);
+      pan.connect(master);
+      g.connect(revSend);
+
+      n.start(time);
+      n.stop(time + 0.18);
+    }
+
+    // Live piano
+    function midiToHz(m){ return 440 * Math.pow(2, (m - 69) / 12); }
+
+    const chorusDelayL = ctx.createDelay(0.05);
+    const chorusDelayR = ctx.createDelay(0.05);
+    chorusDelayL.delayTime.value = 0.020;
+    chorusDelayR.delayTime.value = 0.027;
+
+    const chorusGain = ctx.createGain();
+    chorusGain.gain.value = 0.16;
+
+    const chorusPanL = ctx.createStereoPanner();
+    const chorusPanR = ctx.createStereoPanner();
+    chorusPanL.pan.value = -0.6;
+    chorusPanR.pan.value = 0.6;
+
+    chorusDelayL.connect(chorusPanL);
+    chorusDelayR.connect(chorusPanR);
+    chorusPanL.connect(chorusGain);
+    chorusPanR.connect(chorusGain);
+    chorusGain.connect(master);
+    chorusGain.connect(revSend);
+
+    function pianoVoice(freq, time, dur, vel){
+      const o1 = ctx.createOscillator();
+      const o2 = ctx.createOscillator();
+      const o3 = ctx.createOscillator();
+
+      o1.type = 'sine';
+      o2.type = 'triangle';
+      o3.type = 'sine';
+
+      o1.frequency.setValueAtTime(freq, time);
+      o2.frequency.setValueAtTime(freq * 2, time);
+      o3.frequency.setValueAtTime(freq, time);
+      o3.detune.setValueAtTime(rand2(-9, 9), time);
+
+      const hammer = ctx.createBufferSource();
+      hammer.buffer = dropNoiseBuf;
+      const hammerBP = ctx.createBiquadFilter();
+      hammerBP.type = 'bandpass';
+      hammerBP.frequency.setValueAtTime(rand2(1800, 3200), time);
+      hammerBP.Q.value = 10;
+
+      const hammerG = ctx.createGain();
+      hammerG.gain.setValueAtTime(0.0001, time);
+      hammerG.gain.exponentialRampToValueAtTime(vel * 0.65, time + 0.002);
+      hammerG.gain.exponentialRampToValueAtTime(0.0001, time + 0.030);
+
+      const g = ctx.createGain();
+      const a = Math.max(0.0001, vel);
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(a, time + 0.012);
+      g.gain.exponentialRampToValueAtTime(a * 0.40, time + 0.10);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(1800, time);
+      lp.Q.value = 0.4;
+
+      const bodyF = ctx.createBiquadFilter();
+      bodyF.type = 'peaking';
+      bodyF.frequency.value = 430;
+      bodyF.Q.value = 0.9;
+      bodyF.gain.value = 2.8;
+
+      const pan = ctx.createStereoPanner();
+      pan.pan.setValueAtTime(rand2(-0.12, 0.12), time);
+
+      o1.connect(g); o2.connect(g); o3.connect(g);
+      g.connect(lp);
+      lp.connect(bodyF);
+      bodyF.connect(pan);
+      pan.connect(master);
+      pan.connect(revSend);
+
+      pan.connect(chorusDelayL);
+      pan.connect(chorusDelayR);
+
+      hammer.connect(hammerBP);
+      hammerBP.connect(hammerG);
+      hammerG.connect(master);
+      hammerG.connect(revSend);
+
+      hammer.start(time);
+      hammer.stop(time + 0.06);
+
+      o1.start(time); o2.start(time); o3.start(time);
+      o1.stop(time + dur + 0.05);
+      o2.stop(time + dur + 0.05);
+      o3.stop(time + dur + 0.05);
+    }
+
+    const key = 57; // A
+    const scale = [0, 2, 3, 5, 7, 8, 10]; // natural minor
+    const deg = (d, oct=0) => key + scale[((d%7)+7)%7] + 12*oct;
+
+    const progression = [
+      [deg(0,0), deg(2,0), deg(4,0)],
+      [deg(6,0), deg(1,0), deg(3,0)],
+      [deg(5,0), deg(0,0), deg(2,0)],
+      [deg(3,0), deg(6,0), deg(1,0)],
+    ];
+    let progIndex = 0;
+
+    let energy = 0.25;
+    let lastEnergyBump = ctx.currentTime;
+
+    function nextChord(){
+      const ch = progression[progIndex % progression.length];
+      progIndex++;
+      return ch;
+    }
+
+    function scheduleMusic(startTime){
+      const chord = nextChord();
+      const root = chord[0], mid = chord[1], top = chord[2];
+
+      const step = 0.42;
+      const steps = 12;
+      const baseVel = 0.014 + energy * 0.010;
+
+      const pat = [root, mid, top, mid, root, mid, top, mid, root, mid, top+12, top];
+
+      for (let i = 0; i < steps; i++){
+        const m = pat[i % pat.length];
+        const t = startTime + i * step + rand2(-0.006, 0.010);
+        const dur = 0.78 + rand2(-0.05, 0.10);
+        const vel = baseVel + rand2(-0.003, 0.004);
+        pianoVoice(midiToHz(m), t, dur, Math.max(0.008, vel));
+      }
+
+      if (Math.random() < 0.70){
+        const bass = root - 12;
+        const tB = startTime + step * 0.0;
+        pianoVoice(midiToHz(bass), tB, 1.25, 0.010 + energy*0.006);
+      }
+
+      if (Math.random() < 0.55){
+        const lift = top + 12 + (Math.random() < 0.35 ? 2 : 0);
+        const tL = startTime + step * 10.5;
+        pianoVoice(midiToHz(lift), tL, 1.08, 0.010 + energy*0.006);
+      }
+
+      return startTime + steps * step;
+    }
+
+    function scheduleDrops(now, horizon){
+      const density = 9 + energy * 5;
+      const count = Math.floor(density * horizon);
+      for (let i = 0; i < count; i++){
+        const t = now + Math.random() * horizon;
+        if (Math.random() < 0.09){
+          droplet(t);
+          droplet(t + rand2(0.028, 0.060));
+        } else {
+          droplet(t);
+        }
+      }
+    }
+
+    air.start();
+
+    const now = ctx.currentTime;
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.05, now + 0.22);
+
+    nodes = { master, comp, rev, revSend, air };
+    setVolumeUI(ambientVol);
+
+    let nextMusic = ctx.currentTime + 0.12;
+    const lookAhead = 1.15;
+
+    schedTimer = setInterval(() => {
+      if (!nodes) return;
+      const tNow = ctx.currentTime;
+
+      if (tNow - lastEnergyBump > 18){
+        energy = Math.min(1, energy + 0.10);
+        lastEnergyBump = tNow;
+        if (Math.random() < 0.25) energy = Math.max(0.20, energy - 0.06);
+      }
+
+      scheduleDrops(tNow + 0.02, 0.60);
+
+      while (nextMusic < tNow + lookAhead){
+        nextMusic = scheduleMusic(nextMusic);
+      }
+    }, 180);
+  }
+
+  function stopAmbient(){
+    if (!nodes) return;
+
+    const ctx = AC;
+    const now = ctx.currentTime;
+
+    if (schedTimer){
+      clearInterval(schedTimer);
+      schedTimer = null;
+    }
+
+    try{
+      nodes.master.gain.cancelScheduledValues(now);
+      nodes.master.gain.setValueAtTime(Math.max(0.0001, nodes.master.gain.value), now);
+      nodes.master.gain.exponentialRampToValueAtTime(0.0001, now + 0.20);
+    }catch{}
+
+    setTimeout(() => {
+      try{ nodes.air.stop(); }catch{}
+      try{ nodes.master.disconnect(); }catch{}
+      nodes = null;
+    }, 260);
+  }
+
+  ambientBtn?.addEventListener('click', async () => {
+    ambientOn = !ambientOn;
+    localStorage.setItem('domik_ambient', ambientOn ? '1' : '0');
+    uiAmbient();
+
+    await resumeIfNeeded();
+
+    if (ambientOn){
+      startAmbient();
+      showToast('Капли + пианино включены 🌧️🎹');
+    }else{
+      stopAmbient();
+      showToast('Ambient выключен');
+    }
+    tap();
+  });
+
+  if (ambientOn) uiAmbient();
+
+  // Tiny UI tap
+  let tapAC = null;
+  function tap(){
+    try{
+      if (!tapAC) tapAC = new (AudioContext || webkitAudioContext)();
+      const A = tapAC;
+      const o = A.createOscillator();
+      const g = A.createGain();
+      o.type = 'triangle';
+      const now = A.currentTime;
+      o.frequency.setValueAtTime(420, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(0.05, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      o.connect(g); g.connect(A.destination);
+      o.start(now); o.stop(now + 0.14);
+    }catch{}
+  }
+})();
 </script>
-
 </body>
 </html>
