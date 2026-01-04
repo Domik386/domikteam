@@ -435,6 +435,27 @@ h2{
   font-weight:900;
 }
 
+/* Back to top */
+.to-top{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:46px;height:46px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+  cursor:pointer;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  z-index:70;
+}
+.to-top.show{ opacity:1; pointer-events:auto; transform: translateY(-4px); }
+.to-top:hover{ border-color: rgba(255,140,26,.55); box-shadow: var(--glow); }
+
 footer{
   margin-top:90px;
   padding:44px 18px;
@@ -475,6 +496,7 @@ footer{
 
     <nav>
       <a href="#about">Обо мне</a>
+      <a href="#stream">Стрим</a>
       <a href="#support">Поддержка</a>
       <a href="#system">Система</a>
       <a href="#contacts">Контакты</a>
@@ -483,6 +505,7 @@ footer{
     <div class="actions">
       <a class="btn" href="#support">💸 Донат</a>
       <a class="btn primary" href="https://t.me/domikteam1" target="_blank" rel="noreferrer">📣 Telegram</a>
+      <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Twitch</a>
       <button class="burger" id="burger" aria-label="Открыть меню">
         <span></span><span></span><span></span>
       </button>
@@ -491,6 +514,7 @@ footer{
 
   <div class="mobile-nav" id="mobileNav">
     <a href="#about">Обо мне</a>
+    <a href="#stream">Стрим</a>
     <a href="#support">Поддержка</a>
     <a href="#system">Система</a>
     <a href="#contacts">Контакты</a>
@@ -515,6 +539,7 @@ footer{
       <div class="hero-actions">
         <a class="btn primary" href="#support">💳 Поддержать</a>
         <a class="btn" href="https://t.me/+YrEYNQy0OBYzYzg0" target="_blank" rel="noreferrer">💬 Чат</a>
+        <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Twitch</a>
         <a class="btn" href="https://www.tiktok.com/@domikteam" target="_blank" rel="noreferrer">🎥 TikTok</a>
       </div>
 
@@ -530,7 +555,8 @@ footer{
       <div class="mini reveal">
         <p class="mini-title">Быстрые ссылки</p>
         <div class="stat"><b>Telegram</b><span>t.me/domikteam1</span></div>
-        <div class="stat"><b>Chat</b><span>Вступить</span></div>
+        <div class="stat"><b>Twitch</b><span>twitch.tv/domina_b</span></div>
+        <div class="stat"><b>Chat</b><span>t.me/+YrEYNQy0OBYzYzg0</span></div>
         <div class="stat"><b>TikTok</b><span>@domikteam</span></div>
       </div>
 
@@ -542,6 +568,35 @@ footer{
       </div>
     </div>
   </div>
+
+  <!-- STREAM INFO -->
+  <section id="stream" class="reveal">
+    <h2>Стрим-инфо</h2>
+    <div class="grid">
+      <div class="card">
+        <h4>🗓️ Расписание</h4>
+        <p>Почти ежедневно вечером. Точное время — в Telegram и на Twitch.</p>
+      </div>
+
+      <div class="card">
+        <h4>🎮 Что будет на стриме</h4>
+        <p>CS2 матчмейкинг/пати, разбор моментов, общение с чатом, иногда “фановое”.</p>
+      </div>
+
+      <div class="card">
+        <h4>✅ Как поддержать</h4>
+        <p>Донат — в разделе “Поддержка”, а лучший буст — фоллоу на Twitch 🧡</p>
+        <p style="margin-top:10px;">
+          <a class="btn" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">🟣 Перейти на Twitch</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <h4>📌 Правила чата</h4>
+        <p>Без токсика/спама/оскорблений. Уважение — база. Модеры следят 🙂</p>
+      </div>
+    </div>
+  </section>
 
   <!-- SUPPORT -->
   <section id="support" class="reveal">
@@ -615,6 +670,16 @@ footer{
         </div>
       </a>
 
+      <a class="card" href="https://www.twitch.tv/domina_b" target="_blank" rel="noreferrer">
+        <div class="contact">
+          <div class="icon">TW</div>
+          <div>
+            <h4>Twitch</h4>
+            <p>twitch.tv/domina_b</p>
+          </div>
+        </div>
+      </a>
+
       <a class="card" href="https://www.tiktok.com/@domikteam" target="_blank" rel="noreferrer">
         <div class="contact">
           <div class="icon">TT</div>
@@ -632,6 +697,8 @@ footer{
 <footer>© Артем (Domik) • 2025</footer>
 
 <div class="toast" id="toast"><i>✓</i><span id="toastText">Скопировано!</span></div>
+
+<button class="to-top" id="toTop" aria-label="Наверх">↑</button>
 
 <script>
 /* Mobile menu */
@@ -689,7 +756,6 @@ document.querySelectorAll('.card.copy').forEach(card => {
   const btn = card.querySelector('.copy-btn');
 
   card.addEventListener('click', (e) => {
-    // чтобы клик по кнопке не “дважды” срабатывал — всё равно копируем один раз
     copyText(value);
   });
 
@@ -698,6 +764,14 @@ document.querySelectorAll('.card.copy').forEach(card => {
     copyText(value);
   });
 });
+
+/* Back to top */
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 600) toTop.classList.add('show');
+  else toTop.classList.remove('show');
+});
+toTop?.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
 </script>
 
 </body>
